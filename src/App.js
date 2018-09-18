@@ -2,6 +2,12 @@ import React, { Component } from 'react'
 
 import textOptions from './textOptions'
 
+import TextEntry from './TextEntry'
+
+import ShrunkText from './ShrunkText'
+
+import OptionsRow from './OptionsRow'
+
 class App extends Component {
   constructor () {
     super()
@@ -11,6 +17,7 @@ class App extends Component {
     }
 
     this.updateText = this.updateText.bind(this)
+    this.setOption = this.setOption.bind(this)
   }
 
   updateText (event) {
@@ -50,7 +57,6 @@ class App extends Component {
 
     return text
   }
-
   render () {
     const text = this.state.text
     const shrunkText = this.shrinkText()
@@ -58,45 +64,10 @@ class App extends Component {
       <div className='App container'>
         <h1>TweetShrink</h1>
         <div className='row'>
-          <div className='col'>
-            {/* TextEntry */}
-            <textarea
-              className='TextEntry-textbox'
-              placeholder='What do you want to shrink?'
-              onChange={this.updateText}
-              value={text} />
-            <div>
-              {text && `${text.length} characters`}
-            </div>
-            {/* end TextEntry */}
-          </div>
-          <div className='col'>
-            {/* ShrunkText */}
-            <div className='TextEntry-shrunk-text'>
-              {shrunkText}
-            </div>
-            <div>
-              {shrunkText && `${shrunkText.length} characters`}
-            </div>
-            {/* end ShrunkText */}
-          </div>
+          <TextEntry text={text} updateText={this.updateText} />
+          <ShrunkText shrunkText={shrunkText} />
         </div>
-        <div className='row options'>
-          <div className='col-12'>
-            <h4>Options</h4>
-          </div>
-          {/* TextOptions */}
-          {textOptions.map((option, idx) => (
-            <div key={idx} className='col-6'>
-              {/* TextOption */}
-              <label htmlFor={option.id}>
-                <input type='checkbox' id={option.id} onChange={this.setOption(option.id)} /> {' ' + option.label}
-              </label>
-              {/* end TextOption */}
-            </div>
-          ))}
-          {/* end TextOptions */}
-        </div>
+        <OptionsRow textOptions={textOptions} setOption={this.setOption} />
       </div>
     )
   }
